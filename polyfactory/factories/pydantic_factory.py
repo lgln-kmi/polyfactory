@@ -21,6 +21,8 @@ from polyfactory.utils.predicates import is_annotated, is_optional, is_safe_subc
 from polyfactory.utils.types import NoneType
 from polyfactory.value_generators.primitives import create_random_bytes
 
+from pydantic_extra_types.country import CountryAlpha2, CountryAlpha3
+
 try:
     import pydantic
     from pydantic import (
@@ -86,7 +88,6 @@ except ImportError:
     from pydantic.v1 import BaseModel as BaseModelV1  # type: ignore[assignment]
     from pydantic.v1.color import Color  # type: ignore[assignment]
     from pydantic.v1.fields import DeferredType, ModelField, Undefined
-
 
 if TYPE_CHECKING:
     from collections import abc
@@ -648,6 +649,8 @@ class ModelFactory(Generic[T], BaseFactory[T]):
             IPvAnyNetwork: lambda: cls.__faker__.ipv4(network=True),
             PastDate: cls.__faker__.past_date,
             FutureDate: cls.__faker__.future_date,
+            CountryAlpha2: lambda: cls.__faker__.country_code(representation="alpha-2"),
+            CountryAlpha3: lambda: cls.__faker__.country_code(representation="alpha-3"),
         }
 
         # v1 only values

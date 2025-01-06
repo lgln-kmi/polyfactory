@@ -192,8 +192,8 @@ class FieldMeta:
                     constraints["pattern"] = "[[:ascii:]]"
                 elif func is str.isdigit:
                     constraints["pattern"] = "[[:digit:]]"
-            elif is_dataclass_instance(value) and (value_dict := asdict(value)) and ("allowed_schemes" in value_dict):
-                constraints["url"] = {k: v for k, v in value_dict.items() if v is not None}
+            # elif is_dataclass_instance(value) and (value_dict := asdict(value)) and ("allowed_schemes" in value_dict):
+            #    constraints["url"] = {k: v for k, v in value_dict.items() if v is not None}
             # This is to support `Constraints`, but we can't do a isinstance with `Constraints` since isinstance
             # checks with `TypedDict` is not supported.
             elif isinstance(value, Mapping):
