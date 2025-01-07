@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AbstractSet, Any, Iterable, MutableMapping, MutableSequence, Set, Tuple, cast
+from typing import TYPE_CHECKING, AbstractSet, Any, Counter, Iterable, MutableMapping, MutableSequence, Set, Tuple, cast
 
 from typing_extensions import is_typeddict
 
@@ -39,6 +39,15 @@ def handle_collection_type(
         for child_meta in field_meta.children
     ):
         return container
+
+    if issubclass( container_type, Counter ):
+        for subfield_meta in field_meta.children:
+            container.update( [
+                factory.get_field_value( subfield_meta,
+                                         field_build_parameters=field_build_parameters,
+                                         build_context=build_context )
+            ] )
+            return container
 
     if issubclass(container_type, MutableMapping) or is_typeddict(container_type):
         for key_field_meta, value_field_meta in cast(
